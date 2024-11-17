@@ -6,7 +6,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Response
 from fastapi.responses import JSONResponse
 from lsst.resources import ResourcePath
-from safir.dependencies.logger import logger_dependency
+from safir.dependencies.gafaelfawr import auth_logger_dependency
 from safir.metadata import get_metadata
 from structlog.stdlib import BoundLogger
 
@@ -30,7 +30,7 @@ external_router = APIRouter()
     summary="Application metadata",
 )
 async def get_index(
-    logger: Annotated[BoundLogger, Depends(logger_dependency)],
+    logger: Annotated[BoundLogger, Depends(auth_logger_dependency)],
 ) -> Index:
     """GET ``/s3proxy/`` (the app's external root).
 
@@ -65,13 +65,14 @@ async def get_index(
 async def get_s3(
     bucket: str,
     key: str,
-    logger: Annotated[BoundLogger, Depends(logger_dependency)],
+    logger: Annotated[BoundLogger, Depends(auth_logger_dependency)],
 ) -> Response:
     """GET ``/s3proxy/s3/{bucket}/{key:path}``.
 
     This returns the contents of an s3 object
     """
     path = f"s3://{bucket}/{key}"
+    logger.info("s3 request")
     rp = ResourcePath(path)
     mimetype, encoding = mimetypes.guess_type(path)
     if mimetype is None:
