@@ -12,6 +12,8 @@ fastapi>=0.100
 uvicorn[standard]
 
 # Other dependencies.
+boto3
+lsst-resources
 pydantic>2
 pydantic-settings
 safir>=5
