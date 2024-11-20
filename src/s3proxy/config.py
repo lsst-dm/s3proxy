@@ -14,9 +14,7 @@ class Config(BaseSettings):
 
     name: str = Field("s3proxy", title="Name of application")
 
-    path_prefix: str = Field(
-        "/s3proxy", title="URL prefix for application"
-    )
+    path_prefix: str = Field("/s3proxy", title="URL prefix for application")
 
     profile: Profile = Field(
         Profile.development, title="Application logging profile"
