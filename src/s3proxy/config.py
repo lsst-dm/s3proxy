@@ -51,12 +51,12 @@ class Config(BaseSettings):
         title="List of acceptable MIME types viewable directly in browsers",
     )
 
-    also_allow_mimetypes: list[str] | None = Field(
-        None, title="Additional allowed MIME types beyond default list"
+    also_allow_mimetypes: list[str] = Field(
+        [], title="Additional allowed MIME types beyond default list"
     )
 
     disallow_mimetypes: list[str] | None = Field(
-        None, title="MIME types to exclude, even if allowed by other lists"
+        [], title="MIME types to exclude, even if allowed by other lists"
     )
 
     model_config = SettingsConfigDict(
