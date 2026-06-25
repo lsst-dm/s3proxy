@@ -55,9 +55,16 @@ class Config(BaseSettings):
         [], title="Additional allowed MIME types beyond default list"
     )
 
-    disallow_mimetypes: list[str] | None = Field(
+    disallow_mimetypes: list[str] = Field(
         [], title="MIME types to exclude, even if allowed by other lists"
     )
+
+    @property
+    def allowed_mimetypes(self) -> set[str]:
+        """Resolved set of MIME types that may be served directly."""
+        return (
+            set(self.accept_mimetypes) | set(self.also_allow_mimetypes)
+        ) - set(self.disallow_mimetypes)
 
     model_config = SettingsConfigDict(
         env_prefix="S3PROXY_", case_sensitive=False

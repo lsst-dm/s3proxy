@@ -75,12 +75,7 @@ async def get_s3(
 
     path = f"s3://{bucket}/{key}"
     mimetype, encoding = mimetypes.guess_type(path)
-    ok_mimetypes = (
-        set(config.accept_mimetypes)
-        + set(config.also_allow_mimetypes)
-        - set(config.disallow_mimetypes)
-    )
-    if mimetype is None or mimetype not in ok_mimetypes:
+    if mimetype is None or mimetype not in config.allowed_mimetypes:
         return JSONResponse(
             status_code=415,  # Unsupported Media Type
             content={
