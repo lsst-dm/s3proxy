@@ -71,12 +71,19 @@ async def get_s3(
 
     This returns the contents of an s3 object
     """
-    path = f"s3://{bucket}/{key}"
     logger.info("s3 request")
-    rp = ResourcePath(path)
+
+    path = f"s3://{bucket}/{key}"
     mimetype, encoding = mimetypes.guess_type(path)
-    if mimetype is None:
-        mimetype = "application/octet-stream"
+    if mimetype is None or mimetype not in config.allowed_mimetypes:
+        return JSONResponse(
+            status_code=415,  # Unsupported Media Type
+            content={
+                "message": f"Media type {mimetype} is not browsable: {path}"
+            },
+        )
+
+    rp = ResourcePath(path)
     try:
         return Response(content=rp.read(), media_type=mimetype)
     except FileNotFoundError:
