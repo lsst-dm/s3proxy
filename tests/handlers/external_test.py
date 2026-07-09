@@ -100,4 +100,3 @@ async def test_get_s3_missing_object_returns_404(client: AsyncClient) -> None:
 
     assert response.status_code == 404
     assert "Not found" in response.json()["message"]
-
