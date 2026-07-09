@@ -16,4 +16,4 @@ boto3
 lsst-resources
 pydantic>2
 pydantic-settings
-safir>=5
+safir>=15.2.0
