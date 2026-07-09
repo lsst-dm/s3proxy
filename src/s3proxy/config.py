@@ -59,12 +59,35 @@ class Config(BaseSettings):
         [], title="MIME types to exclude, even if allowed by other lists"
     )
 
+    stream_chunk_size: int = Field(
+        262144,
+        title="Chunk size in bytes when streaming object contents",
+        ge=4096,
+    )
+
+    cache_max_age: int = Field(
+        0,
+        title=(
+            "If greater than zero, send Cache-Control: public, max-age=N "
+            "for image MIME types"
+        ),
+        ge=0,
+    )
+
     @property
     def allowed_mimetypes(self) -> set[str]:
         """Resolved set of MIME types that may be served directly."""
         return (
             set(self.accept_mimetypes) | set(self.also_allow_mimetypes)
         ) - set(self.disallow_mimetypes)
+
+    def cache_control_for(self, mimetype: str) -> str | None:
+        """Return a Cache-Control header value for cacheable image types."""
+        if self.cache_max_age <= 0:
+            return None
+        if not mimetype.startswith("image/"):
+            return None
+        return f"public, max-age={self.cache_max_age}"
 
     model_config = SettingsConfigDict(
         env_prefix="S3PROXY_", case_sensitive=False
