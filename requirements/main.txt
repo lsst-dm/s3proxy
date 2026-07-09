@@ -30,13 +30,13 @@ astropy-iers-data==0.2026.6.22.1.23.34 \
     --hash=sha256:15e12a6863a366ff4a4d246087afb75f71a00d1fed86b9fd6d86f29a71809d38 \
     --hash=sha256:d96f5102426e7ba5f28d7aabf417a547d912482afa97c24430f5c9fe9b6a884d
     # via astropy
-boto3==1.43.36 \
-    --hash=sha256:42942dde254673abcbc9e6e60017c88341a4f49d99d24e1f2e290fb38138c26f \
-    --hash=sha256:587d7ee92a12e440ad12b0e7f11f3358f0c4d65b19f64726efc94aaf194aff28
-    # via -r requirements/main.in
-botocore==1.43.36 \
-    --hash=sha256:3c65fdc39ed01d8dfde1e961b34038aed03c459f8ddf80717a12ac006475e49d \
-    --hash=sha256:4cae47d1b2d426316b85a0087d9e69e048f13bc003b5177d74639fe9dfd28205
+boto3==1.43.43 \
+    --hash=sha256:7ad1208ead8ac5b07cdef66c0ce1579eda2f550a0ca2f88f6cbd35da44212284 \
+    --hash=sha256:ff66a8a6a2728a703f2c63136b8a9b5aeb9c2a902c4e57d79462221b1fd2dd86
+    # via -r main.in
+botocore==1.43.43 \
+    --hash=sha256:48b3e69404a64f97f16fe72409a0bbb3db5e659403203d26abb447a31e19926b \
+    --hash=sha256:7f6c05ccf4f04543dca40f533af2eeae40306cf4e1e18cd0e7debf548c478c10
     # via
     #   boto3
     #   s3transfer
@@ -47,7 +47,7 @@ certifi==2026.6.17 \
     #   httpcore
     #   httpx
     #   sentry-sdk
-cffi==2.0.0 ; platform_python_implementation != 'PyPy' \
+cffi==2.0.0 \
     --hash=sha256:00bdf7acc5f795150faa6957054fbbca2439db2f775ce831222b66f192f03beb \
     --hash=sha256:07b271772c100085dd28b74fa0cd81c8fb1a3ba18b21e03d7c27f3436a10606b \
     --hash=sha256:087067fa8953339c723661eda6b54bc98c5625757ea62e95eb4898ad5e776e9f \
@@ -139,12 +139,6 @@ click==8.4.2 \
     # via
     #   safir
     #   uvicorn
-colorama==0.4.6 ; sys_platform == 'win32' \
-    --hash=sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44 \
-    --hash=sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6
-    # via
-    #   click
-    #   uvicorn
 cryptography==48.0.1 \
     --hash=sha256:08a597acce1ff37f347400087776599e2348a3a8bc53b44120e463cd274efe4a \
     --hash=sha256:09f73a725d582cef64b91281a322cd798d14a33b2b6f2b7ad9531dc336d84c02 \
@@ -206,7 +200,7 @@ fastapi==0.138.1 \
     --hash=sha256:96e3702dce09ee0dce48856135620d3d865ca684a79fe7513fd7b13a12f82862 \
     --hash=sha256:b994cae7ba8b82c976a728b544244de31333fa5f7d261f9a1dffe526444cae23
     # via
-    #   -r requirements/main.in
+    #   -r main.in
     #   safir
 gidgethub==5.4.0 \
     --hash=sha256:522bd3a846a315c3163925a840930c4c9a0d685d5853afe852fd589cb472daf5 \
@@ -293,7 +287,7 @@ jmespath==1.1.0 \
 lsst-resources==30.2026.2600 \
     --hash=sha256:7f40a92f89bb3f49a7a36476f1756b3d8965689a2c034d297e5001597760ef4e \
     --hash=sha256:9b123d1ab9400dbc518cf0108f32fa5cb102c8fab9c06804b6bd416019c8ef09
-    # via -r requirements/main.in
+    # via -r main.in
 lsst-utils==30.2026.2600 \
     --hash=sha256:571688ee585a38fdc028e781606e10cca1b90fc65c812d1d6f4cf22b1bcdb01b \
     --hash=sha256:c424b1643b1fd39c13d9f56127f403431fe866356488cd46a82a73383c7c9b2a
@@ -374,7 +368,7 @@ psutil==7.2.2 \
     --hash=sha256:eed63d3b4d62449571547b60578c5b2c4bcccc5387148db46e0c2313dad0ee00 \
     --hash=sha256:fd04ef36b4a6d599bbdb225dd1d3f51e00105f6d48a28f006da7f9822f2606d8
     # via lsst-utils
-pycparser==3.0 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy' \
+pycparser==3.0 \
     --hash=sha256:600f49d217304a5902ac3c37e1281c9fe94e4d0489de643a9504c5cdfdfc6b29 \
     --hash=sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992
     # via cffi
@@ -382,7 +376,7 @@ pydantic==2.13.4 \
     --hash=sha256:45a282cde31d808236fd7ea9d919b128653c8b38b393d1c4ab335c62924d9aba \
     --hash=sha256:c40756b57adaa8b1efeeced5c196f3f3b7c435f90e84ea7f443901bec8099ef6
     # via
-    #   -r requirements/main.in
+    #   -r main.in
     #   fastapi
     #   pydantic-settings
     #   safir
@@ -514,7 +508,7 @@ pydantic-settings==2.14.2 \
     --hash=sha256:a20c97b37910b6550d5ea50fbcc2d4187defe58cd57070b73863d069419c9440 \
     --hash=sha256:c19dd64b19097f1de80184f0cc7b0272a13ae6e170cbf240a3e27e381ed14a5f
     # via
-    #   -r requirements/main.in
+    #   -r main.in
     #   safir
 pyerfa==2.0.1.5 \
     --hash=sha256:07b80cd70701f5d066b1ac8cce406682cfcd667a1186ec7d7ade597239a6021d \
@@ -529,10 +523,12 @@ pyerfa==2.0.1.5 \
     --hash=sha256:be1aeb70390dd03a34faf96749d5cabc58437410b4aab7213c512323932427df \
     --hash=sha256:d30b9b0df588ed5467e529d851ea324a67239096dd44703125072fd11b351ea2
     # via astropy
-pyjwt==2.13.0 \
+pyjwt[crypto]==2.13.0 \
     --hash=sha256:41571c89ca91598c79e8ef18a2d07367d4810fbbd6f637794879baf1b7703423 \
     --hash=sha256:66adcc2aff09b3f1bbd95fc1e1577df8ac8723c978552fd43304c8a290ac5728
-    # via gidgethub
+    # via
+    #   gidgethub
+    #   pyjwt
 python-dateutil==2.9.0.post0 \
     --hash=sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3 \
     --hash=sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427
@@ -628,7 +624,7 @@ s3transfer==0.19.0 \
 safir==15.1.1 \
     --hash=sha256:34b55f6ab2eb0395ab70688e669d2b373e0c007402d06a955045965c209dd450 \
     --hash=sha256:9fb12ca17c32931efce8208c52bebadd2d292f206270054e9b3a2aafd54dded0
-    # via -r requirements/main.in
+    # via -r main.in
 safir-logging==15.1.1 \
     --hash=sha256:2ce5bc140e68b3ecf61ff34af8507fcd4f7ddf1559ce3f03d8efafad1edcc989 \
     --hash=sha256:a72c6dce963af0792bf56634305328d3bd29e2edacb5bd24934227b1db92d7bf
@@ -662,11 +658,9 @@ typing-extensions==4.15.0 \
     --hash=sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466 \
     --hash=sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548
     # via
-    #   anyio
     #   fastapi
     #   pydantic
     #   pydantic-core
-    #   starlette
     #   typing-inspection
 typing-inspection==0.4.2 \
     --hash=sha256:4ed1cacbdc298c220f1bd249ed5287caa16f34d44ef4e9c3d0cbad5b521545e7 \
@@ -685,11 +679,11 @@ urllib3==2.7.0 \
     # via
     #   botocore
     #   sentry-sdk
-uvicorn==0.49.0 \
+uvicorn[standard]==0.49.0 \
     --hash=sha256:ba3d14c3ee7e41c6c654c46c9eb489d33213cdd30aa1696eab1374337c13f68f \
     --hash=sha256:ebf4271aa580d9de97f93192d4595176df6e91f9aae919ca73e4fc07df1e66a3
-    # via -r requirements/main.in
-uvloop==0.22.1 ; platform_python_implementation != 'PyPy' and sys_platform != 'cygwin' and sys_platform != 'win32' \
+    # via -r main.in
+uvloop==0.22.1 \
     --hash=sha256:017bd46f9e7b78e81606329d07141d3da446f8798c6baeec124260e22c262772 \
     --hash=sha256:0530a5fbad9c9e4ee3f2b33b148c6a64d47bbad8000ea63704fa8260f4cf728e \
     --hash=sha256:05e4b5f86e621cf3927631789999e697e58f0d2d32675b67d9ca9eb0bca55743 \
