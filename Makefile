@@ -29,11 +29,11 @@ update-deps:
 	uv pip install --upgrade pre-commit
 	pre-commit autoupdate
 	uv pip compile --upgrade --universal --generate-hashes		\
-	    --python-version 3.12					\
+	    --python-version 3.14					\
 	    --output-file requirements/main.txt requirements/main.in
 	uv pip compile --upgrade --universal --generate-hashes		\
-	    --python-version 3.12					\
+	    --python-version 3.14					\
 	    --output-file requirements/dev.txt requirements/dev.in
 	uv pip compile --upgrade --universal --generate-hashes		\
-	    --python-version 3.12					\
+	    --python-version 3.14					\
 	    --output-file requirements/tox.txt requirements/tox.in
