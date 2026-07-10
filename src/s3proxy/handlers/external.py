@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import mimetypes
 import time
 from collections.abc import Iterator
 from typing import Annotated
@@ -16,6 +15,7 @@ from starlette.concurrency import iterate_in_threadpool
 from structlog.stdlib import BoundLogger
 
 from ..config import config
+from ..mimetype import guess_object_mimetype
 from ..models import Index
 
 __all__ = ["get_index", "get_s3", "external_router"]
@@ -107,7 +107,7 @@ async def get_s3(
     logger.debug("s3 request", bucket=bucket, key=key)
 
     path = f"s3://{bucket}/{key}"
-    mimetype, _encoding = mimetypes.guess_type(path)
+    mimetype = guess_object_mimetype(key)
     if mimetype is None or mimetype not in config.allowed_mimetypes:
         return JSONResponse(
             status_code=415,  # Unsupported Media Type

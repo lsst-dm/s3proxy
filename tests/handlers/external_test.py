@@ -5,7 +5,6 @@ from __future__ import annotations
 from unittest.mock import MagicMock, patch
 
 import pytest
-from botocore.exceptions import NoCredentialsError
 from httpx import AsyncClient
 
 from s3proxy.config import config
@@ -30,14 +29,20 @@ async def test_get_index(client: AsyncClient) -> None:
 @pytest.mark.asyncio
 async def test_get_s3(client: AsyncClient) -> None:
     """An allowed MIME type passes filtering and reaches the S3 backend."""
-    # ``key.txt`` resolves to ``text/plain``, which is in the default
-    # ``accept_mimetypes`` list, so the request proceeds to the S3 backend
-    # and fails on missing credentials rather than being filtered out.
-    with pytest.raises(NoCredentialsError):
-        await client.get(
+    mock_handle = MagicMock()
+    mock_handle.read.side_effect = [b"ok", b""]
+    mock_rp = MagicMock()
+    mock_rp.open.return_value.__enter__.return_value = mock_handle
+    mock_rp.open.return_value.__exit__.return_value = None
+
+    with patch("s3proxy.handlers.external.ResourcePath", return_value=mock_rp):
+        response = await client.get(
             "/s3proxy/s3/bucket/key.txt",
             headers={"X-Auth-Request-User": "test"},
         )
+
+    assert response.status_code == 200
+    assert await response.aread() == b"ok"
 
 
 @pytest.mark.asyncio
@@ -47,6 +52,46 @@ async def test_get_s3_unknown_mimetype(client: AsyncClient) -> None:
         "/s3proxy/s3/bucket/key", headers={"X-Auth-Request-User": "test"}
     )
     assert response.status_code == 415
+
+
+@pytest.mark.asyncio
+async def test_get_s3_hips_properties(client: AsyncClient) -> None:
+    """HiPS properties files are treated as text/plain and streamed."""
+    mock_handle = MagicMock()
+    mock_handle.read.side_effect = [b"hips_release_date = 2024", b""]
+    mock_rp = MagicMock()
+    mock_rp.open.return_value.__enter__.return_value = mock_handle
+    mock_rp.open.return_value.__exit__.return_value = None
+
+    with patch("s3proxy.handlers.external.ResourcePath", return_value=mock_rp):
+        response = await client.get(
+            "/s3proxy/s3/hips@rubin-hips-views/survey/color_gri/properties",
+            headers={"X-Auth-Request-User": "test"},
+        )
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/plain")
+    assert b"hips_release_date" in await response.aread()
+
+
+@pytest.mark.asyncio
+async def test_get_s3_fits(client: AsyncClient) -> None:
+    """FITS objects are allowed and streamed."""
+    mock_handle = MagicMock()
+    mock_handle.read.side_effect = [b"SIMPLE  =", b""]
+    mock_rp = MagicMock()
+    mock_rp.open.return_value.__enter__.return_value = mock_handle
+    mock_rp.open.return_value.__exit__.return_value = None
+
+    with patch("s3proxy.handlers.external.ResourcePath", return_value=mock_rp):
+        response = await client.get(
+            "/s3proxy/s3/hips@rubin-hips-views/survey/Moc.fits",
+            headers={"X-Auth-Request-User": "test"},
+        )
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/fits"
+    assert await response.aread() == b"SIMPLE  ="
 
 
 @pytest.mark.asyncio

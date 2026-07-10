@@ -27,6 +27,8 @@ class Config(BaseSettings):
     accept_mimetypes: list[str] = Field(
         [
             "text/csv",
+            "application/xml",
+            "image/fits",
             "image/gif",
             "text/html",
             "image/jpeg",
@@ -43,6 +45,7 @@ class Config(BaseSettings):
             "image/svg+xml",
             "image/tiff",
             "text/plain",
+            "text/xml",
             "audio/wav",
             "audio/webm",
             "video/webm",
@@ -57,6 +60,19 @@ class Config(BaseSettings):
 
     disallow_mimetypes: list[str] = Field(
         [], title="MIME types to exclude, even if allowed by other lists"
+    )
+
+    extensionless_mimetypes: dict[str, str] = Field(
+        {"properties": "text/plain"},
+        title="MIME types for extensionless object basenames",
+    )
+
+    suffix_mimetypes: dict[str, str] = Field(
+        {
+            ".fits.fz": "image/fits",
+            ".vot": "application/xml",
+        },
+        title="MIME types for object key suffixes not recognized by mimetypes",
     )
 
     stream_chunk_size: int = Field(
