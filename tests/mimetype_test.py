@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from s3proxy.config import Config
 from s3proxy.mimetype import guess_object_mimetype
 
 
@@ -35,3 +36,13 @@ def test_guess_object_mimetype_unknown() -> None:
     """Unrecognized keys remain unknown."""
     assert guess_object_mimetype("bucket/key") is None
     assert guess_object_mimetype("data.parquet") is None
+
+
+def test_guess_object_mimetype_uses_config() -> None:
+    """Extensionless and suffix mappings are configurable."""
+    cfg = Config(
+        extensionless_mimetypes={"README": "text/plain"},
+        suffix_mimetypes={".custom": "application/json"},
+    )
+    assert guess_object_mimetype("docs/README", cfg) == "text/plain"
+    assert guess_object_mimetype("data/file.custom", cfg) == "application/json"

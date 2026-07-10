@@ -62,6 +62,19 @@ class Config(BaseSettings):
         [], title="MIME types to exclude, even if allowed by other lists"
     )
 
+    extensionless_mimetypes: dict[str, str] = Field(
+        {"properties": "text/plain"},
+        title="MIME types for extensionless object basenames",
+    )
+
+    suffix_mimetypes: dict[str, str] = Field(
+        {
+            ".fits.fz": "image/fits",
+            ".vot": "application/xml",
+        },
+        title="MIME types for object key suffixes not recognized by mimetypes",
+    )
+
     stream_chunk_size: int = Field(
         262144,
         title="Chunk size in bytes when streaming object contents",
