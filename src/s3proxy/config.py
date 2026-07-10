@@ -27,6 +27,8 @@ class Config(BaseSettings):
     accept_mimetypes: list[str] = Field(
         [
             "text/csv",
+            "application/xml",
+            "image/fits",
             "image/gif",
             "text/html",
             "image/jpeg",
@@ -43,6 +45,7 @@ class Config(BaseSettings):
             "image/svg+xml",
             "image/tiff",
             "text/plain",
+            "text/xml",
             "audio/wav",
             "audio/webm",
             "video/webm",
